@@ -38,6 +38,9 @@ buttons.forEach((button) => {
             number = button.id.charAt(6);
             firstNumber += number;
             display.textContent = firstNumber;
+        } else if (idName === 'clear') {
+            firstNumber = firstNumber.slice(0, -1);
+            display.textContent = firstNumber;
         }
     });
 });

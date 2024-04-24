@@ -3,27 +3,33 @@ function add(first, second) {
 }
 
 function subtract(first, second) {
-    return first - second;
+    return Number(first) - Number(second);
 }
 
 function multiply(first, second) {
-    return first * second;
+    return Number(first) * Number(second);
 }
 
 function divide(first, second) {
-    return first / second;
+    return Number(first) / Number(second);
 }
 
 function operate(operator, first, second){
-    if (operator === "+") {
-        return add(first, second);
-    } else if (operator === "-") {
-        return subtract(first, second);
-    } else if (operator === "*") {
-        return multiply(first, second);
-    } else if (operator === "/") {
-        return divide(first, second);
+    switch (operator) {
+        case '+':
+            result = add(first, second);
+            break;
+        case '-':
+            result = subtract(first, second);
+            break;
+        case '*':
+            result = multiply(first, second);
+            break;
+        case '/':
+            result = divide(first, second);
+            break;           
     }
+    return result;
 }
 
 let display = document.querySelector(".display");
@@ -37,6 +43,7 @@ let operator = '';
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         idName = button.id;
+        
         if (idName.substring(0, 6) === 'number') {
             number = button.id.charAt(6);
             displayNumber += number;
@@ -47,8 +54,26 @@ buttons.forEach((button) => {
         } else if (idName === 'decimal' && displayNumber.includes('.') === false) {
             displayNumber += '.';
             display.textContent = displayNumber;
-        } else if (idName === 'add') {
-            operator = '+';
+        } else if (idName === 'equals') {
+            secondNumber = displayNumber;
+            result = operate(operator, firstNumber, secondNumber);
+            displayNumber = result;
+            display.textContent = displayNumber;
+        } else {
+            switch (idName) {
+                case 'add' :
+                    operator = '+';
+                    break;
+                case 'subtract' :
+                    operator = '-';
+                    break;
+                case 'multiply' :
+                    operator = '*';
+                    break;
+                case 'divide' :
+                    operator = '/';
+                    break;
+            }
             if (firstNumber === '') {
                 firstNumber = displayNumber;
                 displayNumber = '';
@@ -56,11 +81,6 @@ buttons.forEach((button) => {
                 result = operate(operator, firstNumber, displayNumber);
                 displayNumber = result;
             }
-        } else if (idName === 'equals') {
-            secondNumber = displayNumber;
-            result = operate(operator, firstNumber, secondNumber);
-            displayNumber = result;
-            display.textContent = displayNumber;
         }
     });
 });

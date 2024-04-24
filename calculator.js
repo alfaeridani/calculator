@@ -35,9 +35,8 @@ function operate(operator, first, second){
 let display = document.querySelector(".display");
 let buttons = document.querySelectorAll("button");
 
-let displayNumber = '';
-let firstNumber = '';
-let secondNumber = '';
+let displayedNumber = '';
+let storedNumber = '';
 let operator = '';
 
 buttons.forEach((button) => {
@@ -46,20 +45,28 @@ buttons.forEach((button) => {
         
         if (idName.substring(0, 6) === 'number') {
             number = button.id.charAt(6);
-            displayNumber += number;
-            display.textContent = displayNumber;
+            displayedNumber += number;
+            display.textContent = displayedNumber;
         } else if (idName === 'clear') {
-            displayNumber = displayNumber.slice(0, -1);
-            display.textContent = displayNumber;
-        } else if (idName === 'decimal' && displayNumber.includes('.') === false) {
-            displayNumber += '.';
-            display.textContent = displayNumber;
+            displayedNumber = displayedNumber.slice(0, -1);
+            display.textContent = displayedNumber;
+        } else if (idName === 'decimal' && displayedNumber.includes('.') === false) {
+            displayedNumber += '.';
+            display.textContent = displayedNumber;
         } else if (idName === 'equals') {
-            secondNumber = displayNumber;
-            result = operate(operator, firstNumber, secondNumber);
-            displayNumber = result;
-            display.textContent = displayNumber;
+            result = operate(operator, storedNumber, displayedNumber);
+            displayedNumber = result;
+            display.textContent = displayedNumber;
         } else {
+            if (storedNumber === '') {
+                storedNumber = displayedNumber;
+                displayedNumber = '';
+            } else if (storedNumber != '') {
+                result = operate(operator, storedNumber, displayedNumber);
+                storedNumber = result;
+                display.textContent = storedNumber;
+                displayedNumber = '';
+            }
             switch (idName) {
                 case 'add' :
                     operator = '+';
@@ -73,13 +80,6 @@ buttons.forEach((button) => {
                 case 'divide' :
                     operator = '/';
                     break;
-            }
-            if (firstNumber === '') {
-                firstNumber = displayNumber;
-                displayNumber = '';
-            } else if (firstNumber != '') {
-                result = operate(operator, firstNumber, displayNumber);
-                displayNumber = result;
             }
         }
     });

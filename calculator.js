@@ -41,6 +41,9 @@ buttons.forEach((button) => {
         } else if (idName === 'clear') {
             firstNumber = firstNumber.slice(0, -1);
             display.textContent = firstNumber;
+        } else if (idName === 'decimal' && firstNumber.includes('.') === false) {
+            firstNumber += '.';
+            display.textContent = firstNumber;
         }
     });
 });

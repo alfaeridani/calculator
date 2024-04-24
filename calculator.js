@@ -26,9 +26,18 @@ function operate(operator, first, second){
     }
 }
 
-let display = document.getElementsByClassName("display");
+let display = document.querySelector(".display");
+let buttons = document.querySelectorAll("button");
 
-let n1 = document.querySelector("#n1");
-n1.addEventListener('click', )
+let firstNumber = '';
 
-console.log(operate(operator, firstNumber, secondNumber));
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        idName = button.id;
+        if (idName.substring(0, 6) === 'number') {
+            number = button.id.charAt(6);
+            firstNumber += number;
+            display.textContent = firstNumber;
+        }
+    });
+});

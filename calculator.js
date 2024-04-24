@@ -29,21 +29,38 @@ function operate(operator, first, second){
 let display = document.querySelector(".display");
 let buttons = document.querySelectorAll("button");
 
+let displayNumber = '';
 let firstNumber = '';
+let secondNumber = '';
+let operator = '';
 
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         idName = button.id;
         if (idName.substring(0, 6) === 'number') {
             number = button.id.charAt(6);
-            firstNumber += number;
-            display.textContent = firstNumber;
+            displayNumber += number;
+            display.textContent = displayNumber;
         } else if (idName === 'clear') {
-            firstNumber = firstNumber.slice(0, -1);
-            display.textContent = firstNumber;
-        } else if (idName === 'decimal' && firstNumber.includes('.') === false) {
-            firstNumber += '.';
-            display.textContent = firstNumber;
+            displayNumber = displayNumber.slice(0, -1);
+            display.textContent = displayNumber;
+        } else if (idName === 'decimal' && displayNumber.includes('.') === false) {
+            displayNumber += '.';
+            display.textContent = displayNumber;
+        } else if (idName === 'add') {
+            operator = '+';
+            if (firstNumber === '') {
+                firstNumber = displayNumber;
+                displayNumber = '';
+            } else if (firstNumber != '') {
+                result = operate(operator, firstNumber, displayNumber);
+                displayNumber = result;
+            }
+        } else if (idName === 'equals') {
+            secondNumber = displayNumber;
+            result = operate(operator, firstNumber, secondNumber);
+            displayNumber = result;
+            display.textContent = displayNumber;
         }
     });
 });
